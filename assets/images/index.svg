@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="19" viewBox="0 0 52 19">
+  <g id="Group_6109" data-name="Group 6109" transform="translate(-7457 -676)">
+    <rect id="Rectangle_12" data-name="Rectangle 12" width="52" height="13" transform="translate(7457 681)" fill="none"/>
+    <g id="Group_2030" data-name="Group 2030" transform="translate(4797.991 -2154.233)">
+      <text id="cc" transform="translate(2659.009 2845.233)" fill="#377abf" font-size="14" font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">cc</tspan></text>
+      <path id="Path_4942" data-name="Path 4942" d="M3927.272,2151.21l2.33-6.195h.234l2.683,6.195h-.295l-2.482-5.382-2.094,5.382Z" transform="translate(-1254.484 693.53)" stroke="#000" stroke-width="0.8"/>
+      <text id="venue" transform="translate(2677.009 2845.233)" font-size="11" font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">venue</tspan></text>
+      <path id="Path_4943" data-name="Path 4943" d="M4672.266,2300l5.82.494.695,1.263Z" transform="translate(-2002.734 541.862)" fill="#ef4224"/>
+    </g>
+    <g id="Group_2029" data-name="Group 2029" transform="translate(7503.736 682.79)">
+      <g id="Ellipse_1" data-name="Ellipse 1" transform="translate(0.264 0.21)" fill="none" stroke="#000" stroke-width="0.56">
+        <circle cx="2" cy="2" r="2" stroke="none"/>
+        <circle cx="2" cy="2" r="1.72" fill="none"/>
+      </g>
+      <text id="r" transform="translate(1.763 2.711)" font-size="2" font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">R</tspan></text>
+    </g>
+  </g>
+</svg>

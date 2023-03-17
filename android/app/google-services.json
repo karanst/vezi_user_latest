@@ -1,0 +1,129 @@
+{
+  "project_info": {
+    "project_number": "284990110272",
+    "project_id": "vezi-e2c11",
+    "storage_bucket": "vezi-e2c11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284990110272:android:a1357c6ab636dab7367da5",
+        "android_client_info": {
+          "package_name": "com.vezi.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284990110272-5eqaajb39g4c0tvctk11e3pjcvu0ppkm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vezi.driver",
+            "certificate_hash": "c5c2c372a183dbf4ac199387595e30503a9082c3"
+          }
+        },
+        {
+          "client_id": "284990110272-7una9ie0d7qo3ceeuq1mcqkr6pam9pdp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtB6ANVdixi2QwatMN_cnmZasH2Ld1jok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284990110272-7una9ie0d7qo3ceeuq1mcqkr6pam9pdp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284990110272:android:28c3fec28294b38f367da5",
+        "android_client_info": {
+          "package_name": "com.vezi.seller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284990110272-s3lqqjrs54nq2h3vtbqk4mvuggri7irc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vezi.seller",
+            "certificate_hash": "c5c2c372a183dbf4ac199387595e30503a9082c3"
+          }
+        },
+        {
+          "client_id": "284990110272-7una9ie0d7qo3ceeuq1mcqkr6pam9pdp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtB6ANVdixi2QwatMN_cnmZasH2Ld1jok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284990110272-7una9ie0d7qo3ceeuq1mcqkr6pam9pdp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284990110272:android:4aba67dd1acafdae367da5",
+        "android_client_info": {
+          "package_name": "com.vezi.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284990110272-4pevt17fvvtmni1rfnphfg4cvkm5ni3m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vezi.user",
+            "certificate_hash": "b53341ace63b211c307445b6c0b574ee792a2ed8"
+          }
+        },
+        {
+          "client_id": "284990110272-6p0t7o9c6e8sb3m0ji7iuvrninc42mso.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vezi.user",
+            "certificate_hash": "c5c2c372a183dbf4ac199387595e30503a9082c3"
+          }
+        },
+        {
+          "client_id": "284990110272-7una9ie0d7qo3ceeuq1mcqkr6pam9pdp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtB6ANVdixi2QwatMN_cnmZasH2Ld1jok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284990110272-7una9ie0d7qo3ceeuq1mcqkr6pam9pdp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
