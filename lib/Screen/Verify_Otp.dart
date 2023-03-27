@@ -536,7 +536,7 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
                       otpLayout(),
                       verifyBtn(),
                       resendText(),
-                      Text("OTP: ${widget.otp}"),
+                      // Text("OTP: ${widget.otp}"),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.10,
                       ),

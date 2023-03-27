@@ -30,13 +30,13 @@ class _WebviewPageState extends State<WebviewPage> {
   Future<bool> _onWillPop() async {
     return (await showDialog(
       context: context,
-      builder: (context) => new AlertDialog(
+      builder: (context) =>  AlertDialog(
         //title: new Text('Are you sure?'),
-        content: new Text('Do you want to cancel this transaction ?'),
+        content: const Text('Do you want to cancel this transaction ?'),
         actions: <Widget>[
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
+            child: const Text('No'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -44,7 +44,7 @@ class _WebviewPageState extends State<WebviewPage> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (_) => Dashboard()));
             },
-            child: new Text('Yes'),
+            child: const Text('Yes'),
           ),
         ],
       ),
@@ -92,6 +92,9 @@ class _WebviewPageState extends State<WebviewPage> {
                   },
                   onLoadError: (controller, url, code, message) {
                     print(message);
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => Dashboard()));
                   },
                   onLoadStop:
                       (InAppWebViewController controller, Uri? pageUri) async {
@@ -101,8 +104,8 @@ class _WebviewPageState extends State<WebviewPage> {
                     print(pageUri.toString());
                     final page = pageUri.toString();
 
-                    if (page == widget.data?.cancelUrl ||
-                        page == widget.data?.redirectUrl) {
+                    // if (page == widget.data?.cancelUrl ||
+                    //     page == widget.data?.redirectUrl) {
                       var html = await controller.evaluateJavascript(
                           source: "window.document.getElementsByTagName('html')[0].outerHTML;");
 
@@ -125,7 +128,7 @@ class _WebviewPageState extends State<WebviewPage> {
                           return PaymentStatus(resp: html1.toString());
                         }));
                       }
-                    }
+                    // }
                     // var html = await controller.evaluateJavascript(
                     //     source: "window.document.getElementsByTagName('html')[0].outerHTML;");
                     // String html1 = html.toString();

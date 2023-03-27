@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+//import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -471,10 +471,11 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
       );
     }
   }
-  final fbLogin = FacebookLogin();
+ // final fbLogin = FacebookLogin();
   final _firebaseAuth = FirebaseAuth.instance;
   Future<UserCredential> signInWithFacebook() async {
-    final fb = FacebookLogin();
+    return Future.value();
+    /*final fb = FacebookLogin();
     final response = await fb.logIn(
         permissions: [
       FacebookPermission.publicProfile,
@@ -500,7 +501,7 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
         );
       default:
         throw UnimplementedError();
-    }
+    }*/
   }
  /* Future signInFB() async {
     final FacebookLoginResult result = await fbLogin.logIn(["email","public_profile"]);

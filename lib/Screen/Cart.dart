@@ -182,28 +182,30 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
       });
     }
   }
-  onlinePay()async{
-    OrderModel model = OrderModel(listStatus: []);
-    CcAvenue.cCAvenueInit(
-         // transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
-     transUrl: 'https://test.ccavenue.com/transaction/initTrans',
-        accessCode: ccAvenueAccessCode.toString(),
-        amount: '${model.total}',
-        cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-        currencyType: 'AED',
-        merchantId: ccAvenueMerID.toString(),
-        orderId: '${model.id}',
-        redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-        rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp'
-    );
-    print("cc avenue values $ccAvenueAccessCode and ${model.total} and $ccAvenueMerID and ${model.id}");
-  }
+
+  // onlinePay()async{
+  //   OrderModel model = OrderModel(listStatus: []);
+  //   CcAvenue.cCAvenueInit(
+  //        // transUrl: 'https://secure.ccavenue.com/transaction/initTrans',
+  //    transUrl: 'https://test.ccavenue.com/transaction/initTrans',
+  //       accessCode: ccAvenueAccessCode.toString(),
+  //       amount: '${model.total}',
+  //       cancelUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+  //       currencyType: 'AED',
+  //       merchantId: ccAvenueMerID.toString(),
+  //       orderId: '${model.id}',
+  //       redirectUrl: 'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+  //       rsaKeyUrl: 'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp'
+  //   );
+  //   print("cc avenue values $ccAvenueAccessCode and ${model.total} and $ccAvenueMerID and ${model.id}");
+  // }
 
   Future<Null> _refresh() {
-    if (mounted)
+    if (mounted) {
       setState(() {
         _isCartLoad = true;
       });
+    }
     clearAll();
 
     _getCart("0");
@@ -236,7 +238,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   @override
   void dispose() {
     buttonController!.dispose();
-    for (int i = 0; i < _controller.length; i++) _controller[i].dispose();
+    for (int i = 0; i < _controller.length; i++) {
+      _controller[i].dispose();
+    }
 
     if (_razorpay != null) _razorpay!.clear();
     super.dispose();
@@ -320,10 +324,10 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     String? offPer;
     double price = double.parse(
         cartList[index].productList![0].prVarientList![selectedPos].disPrice!);
-    if (price == 0)
+    if (price == 0) {
       price = double.parse(
           cartList[index].productList![0].prVarientList![selectedPos].price!);
-    else {
+    } else {
       double off = (double.parse(cartList[index]
               .productList![0]
               .prVarientList![selectedPos]
@@ -516,9 +520,10 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                   print(cartList);
                                   print(selectedPos);
                                   if (context.read<CartProvider>().isProgress ==
-                                      false)
+                                      false) {
                                     removeFromCart(index, true, cartList, false,
                                         selectedPos);
+                                  }
                                 },
                               )
                             ],
@@ -627,9 +632,10 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                             if (context
                                                     .read<CartProvider>()
                                                     .isProgress ==
-                                                false)
+                                                false) {
                                               removeFromCart(index, false,
                                                   cartList, false, selectedPos);
+                                            }
                                           },
                                         ),
                                         Container(
@@ -660,9 +666,10 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                   if (context
                                                           .read<CartProvider>()
                                                           .isProgress ==
-                                                      false)
+                                                      false) {
                                                     addToCart(
                                                         index, value, cartList);
+                                                  }
                                                 },
                                                 itemBuilder:
                                                     (BuildContext context) {
@@ -707,7 +714,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                             if (context
                                                     .read<CartProvider>()
                                                     .isProgress ==
-                                                false)
+                                                false) {
                                               addToCart(
                                                   index,
                                                   (int.parse(cartList[index]
@@ -718,6 +725,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                               .qtyStepSize!))
                                                       .toString(),
                                                   cartList);
+                                            }
                                           },
                                         )
                                       ],
@@ -790,9 +798,10 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
     double price = double.parse(
         cartList[index].productList![0].prVarientList![selectedPos].disPrice!);
-    if (price == 0)
+    if (price == 0) {
       price = double.parse(
           cartList[index].productList![0].prVarientList![selectedPos].price!);
+    }
 
     cartList[index].perItemPrice = price.toString();
     cartList[index].perItemTotal =
@@ -1213,8 +1222,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         i < saveLaterList[index].productList![0].prVarientList!.length;
         i++) {
       if (saveLaterList[index].varientId ==
-          saveLaterList[index].productList![0].prVarientList![i].id)
+          saveLaterList[index].productList![0].prVarientList![i].id) {
         selectedPos = i;
+      }
     }
 
     double price = double.parse(saveLaterList[index]
@@ -1373,9 +1383,10 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                 ),
                                 onTap: () {
                                   if (context.read<CartProvider>().isProgress ==
-                                      false)
+                                      false) {
                                     removeFromCart(index, true, saveLaterList,
                                         true, selectedPos);
+                                  }
                                 },
                               )
                             ],
@@ -1493,24 +1504,27 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             promoList =
                 (promo as List).map((e) => Promo.fromJson(e)).toList();
           }
-          for (int i = 0; i < cartList.length; i++)
+          for (int i = 0; i < cartList.length; i++) {
             _controller.add(TextEditingController());
+          }
         } else {
           if (msg != 'Cart Is Empty !') setSnackbar(msg!, _scaffoldKey);
         }
-        if (mounted)
+        if (mounted) {
           setState(() {
             _isCartLoad = false;
           });
+        }
         _getAddress();
       } on TimeoutException catch (_) {
         setSnackbar(getTranslated(context, 'somethingMSg')!, _scaffoldKey);
       }
     } else {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _isNetworkAvail = false;
         });
+      }
     }
   }
 
@@ -1571,7 +1585,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                         ),
                                         onTap: () {
                                           if (promoAmt != 0 && isPromoValid!) {
-                                            if (mounted)
+                                            if (mounted) {
                                               setState(() {
                                                 totalPrice =
                                                     totalPrice + promoAmt;
@@ -1580,6 +1594,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                 promoAmt = 0;
                                                 promocode = '';
                                               });
+                                            }
                                           }
                                         },
                                       ),
@@ -1598,11 +1613,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                           Theme.of(context).colorScheme.white,
                                     )),
                                 onTap: () {
-                                  if (promoC.text.trim().isEmpty)
+                                  if (promoC.text.trim().isEmpty) {
                                     setSnackbar(
                                         getTranslated(context, 'ADD_PROMO')!,
                                         _checkscaffoldKey);
-                                  else if (!isPromoValid!) {
+                                  } else if (!isPromoValid!) {
                                     validatePromo(false);
                                     Navigator.pop(context);
                                   }
@@ -1704,8 +1719,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
               .toList();
 
           List<SectionModel> cartList = context.read<CartProvider>().cartList;
-          for (int i = 0; i < cartList.length; i++)
+          for (int i = 0; i < cartList.length; i++) {
             _controller.add(TextEditingController());
+          }
         } else {
           if (msg != 'Cart Is Empty !') setSnackbar(msg!, _scaffoldKey);
         }
@@ -1714,10 +1730,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         setSnackbar(getTranslated(context, 'somethingMSg')!, _scaffoldKey);
       }
     } else {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _isNetworkAvail = false;
         });
+      }
     }
 
     return null;
@@ -1779,17 +1796,19 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
               delCharge = 0;
             } else {
               if ((oriPrice) <
-                  double.parse(addressList[selectedAddress!].freeAmt!))
+                  double.parse(addressList[selectedAddress!].freeAmt!)) {
                 delCharge =
                     double.parse(addressList[selectedAddress!].deliveryCharge!);
-              else
+              } else {
                 delCharge = 0;
+              }
             }
           } else {
-            if (oriPrice < double.parse(MIN_AMT!))
+            if (oriPrice < double.parse(MIN_AMT!)) {
               delCharge = double.parse(CUR_DEL_CHR!);
-            else
+            } else {
               delCharge = 0;
+            }
           }
           totalPrice = delChrge + oriPrice+ 0;
           print("Total----2${totalPrice}DEL-------2${delChrge}");
@@ -1798,7 +1817,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             validatePromo(false);
           } else if (isUseWallet!) {
             context.read<CartProvider>().setProgress(false);
-            if (mounted)
+            if (mounted) {
               setState(() {
                 remWalBal = 0;
                 payMethod = null;
@@ -1808,6 +1827,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
                 selectedMethod = null;
               });
+            }
           } else {
             setState(() {});
             context.read<CartProvider>().setProgress(false);
@@ -1821,10 +1841,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         context.read<CartProvider>().setProgress(false);
       }
     } else {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _isNetworkAvail = false;
         });
+      }
     }
     // } else
     // setSnackbar(
@@ -1875,16 +1896,18 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
             if (!ISFLAT_DEL) {
               if ((oriPrice) <
-                  double.parse(addressList[selectedAddress!].freeAmt!))
+                  double.parse(addressList[selectedAddress!].freeAmt!)) {
                 delCharge =
                     double.parse(addressList[selectedAddress!].deliveryCharge!);
-              else
+              } else {
                 delCharge = 0;
+              }
             } else {
-              if ((oriPrice) < double.parse(MIN_AMT!))
+              if ((oriPrice) < double.parse(MIN_AMT!)) {
                 delCharge = double.parse(CUR_DEL_CHR!);
-              else
+              } else {
                 delCharge = 0;
+              }
             }
             totalPrice = delChrge + oriPrice + 0;
             print("Total----3${totalPrice}DEL-------3${delChrge}");
@@ -1892,7 +1915,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             if (isPromoValid!) {
               validatePromo(true);
             } else if (isUseWallet!) {
-              if (mounted)
+              if (mounted) {
                 checkoutState!(() {
                   remWalBal = 0;
                   payMethod = null;
@@ -1902,6 +1925,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
                   selectedMethod = null;
                 });
+              }
               setState(() {});
             } else {
               context.read<CartProvider>().setProgress(false);
@@ -1918,10 +1942,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         context.read<CartProvider>().setProgress(false);
       }
     } else {
-      if (mounted)
+      if (mounted) {
         checkoutState!(() {
           _isNetworkAvail = false;
         });
+      }
       setState(() {});
     }
   }
@@ -1999,7 +2024,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             validatePromo(false);
           } else if (isUseWallet!) {
             context.read<CartProvider>().setProgress(false);
-            if (mounted)
+            if (mounted) {
               setState(() {
                 remWalBal = 0;
                 payMethod = null;
@@ -2007,6 +2032,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                 isUseWallet = false;
                 isPayLayShow = true;
               });
+            }
           } else {
             context.read<CartProvider>().setProgress(false);
             setState(() {});
@@ -2021,10 +2047,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         context.read<CartProvider>().setProgress(false);
       }
     } else {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _isNetworkAvail = false;
         });
+      }
     }
   }
 
@@ -2043,9 +2070,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           context.read<CartProvider>().setProgress(true);
 
           int? qty;
-          if (remove)
+          if (remove) {
             qty = 0;
-          else {
+          } else {
             qty = (int.parse(cartList[index].qty!) -
                 int.parse(cartList[index].productList![0].qtyStepSize!));
 
@@ -2095,16 +2122,18 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
 
               if (!ISFLAT_DEL) {
                 if ((oriPrice) <
-                    double.parse(addressList[selectedAddress!].freeAmt!))
+                    double.parse(addressList[selectedAddress!].freeAmt!)) {
                   delCharge = double.parse(
                       addressList[selectedAddress!].deliveryCharge!);
-                else
+                } else {
                   delCharge = 0;
+                }
               } else {
-                if ((oriPrice) < double.parse(MIN_AMT!))
+                if ((oriPrice) < double.parse(MIN_AMT!)) {
                   delCharge = double.parse(CUR_DEL_CHR!);
-                else
+                } else {
                   delCharge = 0;
+                }
               }
 
               totalPrice = 0;
@@ -2115,7 +2144,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
               if (isPromoValid!) {
                 validatePromo(true);
               } else if (isUseWallet!) {
-                if (mounted)
+                if (mounted) {
                   checkoutState!(() {
                     remWalBal = 0;
                     payMethod = null;
@@ -2123,6 +2152,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                     isPayLayShow = true;
                     isUseWallet = false;
                   });
+                }
                 context.read<CartProvider>().setProgress(false);
                 setState(() {});
               } else {
@@ -2142,10 +2172,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           context.read<CartProvider>().setProgress(false);
         }
       } else {
-        if (mounted)
+        if (mounted) {
           checkoutState!(() {
             _isNetworkAvail = false;
           });
+        }
         setState(() {});
       }
     }
@@ -2165,9 +2196,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           context.read<CartProvider>().setProgress(true);
 
           int? qty;
-          if (remove)
+          if (remove) {
             qty = 0;
-          else {
+          } else {
             qty = (int.parse(cartList[index].qty!) -
                 int.parse(cartList[index].productList![0].qtyStepSize!));
 
@@ -2222,19 +2253,21 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
               if (!ISFLAT_DEL) {
                 try {
                   if ((oriPrice) <
-                      double.parse(addressList[selectedAddress!].freeAmt!))
+                      double.parse(addressList[selectedAddress!].freeAmt!)) {
                     delCharge = double.parse(
                         addressList[selectedAddress!].deliveryCharge!);
-                  else
+                  } else {
                     delCharge = 0;
+                  }
                 } catch (e) {
                   print(e);
                 }
               } else {
-                if ((oriPrice) < double.parse(MIN_AMT!))
+                if ((oriPrice) < double.parse(MIN_AMT!)) {
                   delCharge = double.parse(CUR_DEL_CHR!);
-                else
+                } else {
                   delCharge = 0;
+                }
               }
 
               totalPrice = 0;
@@ -2245,7 +2278,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                 validatePromo(false);
               } else if (isUseWallet!) {
                 context.read<CartProvider>().setProgress(false);
-                if (mounted)
+                if (mounted) {
                   setState(() {
                     remWalBal = 0;
                     payMethod = null;
@@ -2253,6 +2286,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                     isPayLayShow = true;
                     isUseWallet = false;
                   });
+                }
               } else {
                 context.read<CartProvider>().setProgress(false);
                 setState(() {});
@@ -2276,10 +2310,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           context.read<CartProvider>().setProgress(false);
         }
       } else {
-        if (mounted)
+        if (mounted) {
           setState(() {
             _isNetworkAvail = false;
           });
+        }
       }
     }
   }
@@ -2498,9 +2533,10 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                     _scaffoldKey);
                               }
                               if (mounted) setState(() {});
-                            } else
+                            } else {
                               setSnackbar(getTranslated(context, 'ADD_ITEM')!,
                                   _scaffoldKey);
+                            }
                           }),
                     ]),
                   ),
@@ -2810,8 +2846,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                             _checkscaffoldKey);
                                                       } else if (!deliverable) {
                                                         checkDeliverable();
-                                                      } else
+                                                      } else {
                                                         confirmDialog();
+                                                      }
                                                     })
                                           //}),
                                         ]),
@@ -2830,34 +2867,19 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   doPayment() {
     if (payMethod == getTranslated(context, 'PAYPAL_LBL')) {
       placeOrder('');
-    } else if (payMethod == getTranslated(context, 'RAZORPAY_LBL'))
+    } else if (payMethod == getTranslated(context, 'RAZORPAY_LBL')) {
       razorpayPayment();
-    else if (payMethod == getTranslated(context, 'PAYSTACK_LBL'))
+    } else if (payMethod == getTranslated(context, 'PAYSTACK_LBL')) {
       paystackPayment(context);
-    else if (payMethod == getTranslated(context, 'FLUTTERWAVE_LBL'))
+    } else if (payMethod == getTranslated(context, 'FLUTTERWAVE_LBL')) {
       flutterwavePayment();
-    else if (payMethod == getTranslated(context, 'STRIPE_LBL'))
+    } else if (payMethod == getTranslated(context, 'STRIPE_LBL')) {
       stripePayment();
-    else if (payMethod == getTranslated(context, 'PAYTM_LBL'))
+    } else if (payMethod == getTranslated(context, 'PAYTM_LBL')) {
       paytmPayment();
-    else if(payMethod == getTranslated(context, 'CC_AVENUE'))
+    } else if(payMethod == getTranslated(context, 'CC_AVENUE')) {
       placeOrder('');
-      // _fetchMerchantEncryptedData();
-      // onlinePay();
-
-    /*  else if (payMethod ==
-                                                        getTranslated(
-                                                            context, 'GPAY')) {
-                                                      googlePayment(
-                                                          "google_pay");
-                                                    } else if (payMethod ==
-                                                        getTranslated(context,
-                                                            'APPLEPAY')) {
-                                                      googlePayment(
-                                                          "apple_pay");
-                                                    }*/
-
-    else if (payMethod == getTranslated(context, 'BANKTRAN')) {
+    } else if (payMethod == getTranslated(context, 'BANKTRAN')) {
       bankTransfer();
     } else {
       placeOrder('');
@@ -3179,28 +3201,29 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         quantity = quantity != null ? quantity + "," + sec.qty! : sec.qty;
       }
       String? payVia;
-      if (payMethod == getTranslated(context, 'COD_LBL'))
+      if (payMethod == getTranslated(context, 'COD_LBL')) {
         payVia = "COD";
-      else if (payMethod == getTranslated(context, 'PAYPAL_LBL'))
+      } else if (payMethod == getTranslated(context, 'PAYPAL_LBL')) {
         payVia = "PayPal";
-      else if (payMethod == getTranslated(context, 'PAYUMONEY_LBL'))
+      } else if (payMethod == getTranslated(context, 'PAYUMONEY_LBL')) {
         payVia = "PayUMoney";
-      else if (payMethod == getTranslated(context, 'RAZORPAY_LBL'))
+      } else if (payMethod == getTranslated(context, 'RAZORPAY_LBL')) {
         payVia = "RazorPay";
-      else if (payMethod == getTranslated(context, 'PAYSTACK_LBL'))
+      } else if (payMethod == getTranslated(context, 'PAYSTACK_LBL')) {
         payVia = "Paystack";
-      else if (payMethod == getTranslated(context, 'FLUTTERWAVE_LBL'))
+      } else if (payMethod == getTranslated(context, 'FLUTTERWAVE_LBL')) {
         payVia = "Flutterwave";
-      else if (payMethod == getTranslated(context, 'STRIPE_LBL'))
+      } else if (payMethod == getTranslated(context, 'STRIPE_LBL')) {
         payVia = "Stripe";
-      else if (payMethod == getTranslated(context, 'PAYTM_LBL'))
+      } else if (payMethod == getTranslated(context, 'PAYTM_LBL')) {
         payVia = "Paytm";
-      else if (payMethod == "Wallet")
+      } else if (payMethod == "Wallet") {
         payVia = "Wallet";
-      else if (payMethod == getTranslated(context, 'BANKTRAN'))
+      } else if (payMethod == getTranslated(context, 'BANKTRAN')) {
         payVia = "bank_transfer";
-      else if (payMethod == getTranslated(context, 'CC_AVENUE'))
+      } else if (payMethod == getTranslated(context, 'CC_AVENUE')) {
         payVia = "CCAvenue";
+      }
       try {
         var parameter = {
           USER_ID: CUR_USERID,
@@ -3230,10 +3253,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         if (payMethod == getTranslated(context, 'PAYPAL_LBL')) {
           parameter[ACTIVE_STATUS] = WAITING;
         } else if (payMethod == getTranslated(context, 'STRIPE_LBL')) {
-          if (tranId == "succeeded")
+          if (tranId == "succeeded") {
             parameter[ACTIVE_STATUS] = PLACED;
-          else
+          } else {
             parameter[ACTIVE_STATUS] = WAITING;
+          }
         } else if (payMethod == getTranslated(context, 'BANKTRAN')) {
           parameter[ACTIVE_STATUS] = WAITING;
         }
@@ -3284,17 +3308,19 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           }
         }
       } on TimeoutException catch (_) {
-        if (mounted)
+        if (mounted) {
           checkoutState!(() {
             _placeOrder = true;
           });
+        }
         context.read<CartProvider>().setProgress(false);
       }
     } else {
-      if (mounted)
+      if (mounted) {
         checkoutState!(() {
           _isNetworkAvail = false;
         });
+      }
     }
   }
 
@@ -3847,10 +3873,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         setSnackbar(getTranslated(context, 'somethingMSg')!, _checkscaffoldKey);
       }
     } else {
-      if (mounted)
+      if (mounted) {
         checkoutState!(() {
           _isNetworkAvail = false;
         });
+      }
     }
   }
 
@@ -4285,10 +4312,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         setSnackbar(getTranslated(context, 'somethingMSg')!, _checkscaffoldKey);
       }
     } else {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _isNetworkAvail = false;
         });
+      }
     }
   }
 }

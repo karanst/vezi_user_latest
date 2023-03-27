@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-
+import 'package:http/http.dart' as http;
 // import 'package:vezi/Provider/SettingProvider.dart';
 // import 'package:vezi/Provider/UserProvider.dart';
 // import 'package:vezi/Screen/PaypalWebviewActivity.dart';
@@ -13,6 +13,9 @@ import 'package:http/http.dart';
 import 'package:paytm/paytm.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:vezi/Model/Order_Model.dart';
+import 'package:vezi/Screen/Login.dart';
+import 'package:vezi/Screen/webview_cc.dart';
 
 import '../Helper/AppBtn.dart';
 import '../Helper/Color.dart';
@@ -80,9 +83,10 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    getOrder();
     selectedMethod = null;
     payMethod = null;
-    new Future.delayed(Duration.zero, () {
+     Future.delayed(Duration.zero, () {
       paymentMethodList = [
         getTranslated(context, 'PAYPAL_LBL'),
         getTranslated(context, 'RAZORPAY_LBL'),
@@ -115,6 +119,133 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  String orderId = '';
+
+  Future<Null> getOrder() async {
+    _isNetworkAvail = await isNetworkAvailable();
+    if (_isNetworkAvail) {
+      try {
+        if (isLoadingmore) {
+          if (mounted) {
+            setState(() {
+              isLoadingmore = false;
+              // isGettingdata = true;
+              if (offset == 0) {
+                // searchList = [];
+              }
+            });
+          }
+
+          if (CUR_USERID != null) {
+            var parameter = {
+              USER_ID: CUR_USERID,
+              OFFSET: offset.toString(),
+              LIMIT: perPage.toString(),
+              SEARCH: ''
+              //_searchText.trim(),
+            };
+            print((parameter));
+            // if (activeStatus != null) {
+            //   if (activeStatus == awaitingPayment) activeStatus = "awaiting";
+            //   parameter[ACTIVE_STATUS] = activeStatus;
+            // }
+            Response response =
+            await post(getOrderApi, body: parameter, headers: headers)
+                .timeout(Duration(seconds: timeOut));
+            print("SSSSSSSSSSSSSSSSSS${getOrderApi.toString()}");
+            print(parameter.toString());
+
+            var getdata = json.decode(response.body);
+            bool error = getdata["error"];
+
+            // isGettingdata = false;
+            // if (offset == 0) isNodata = error;
+
+            if (!error) {
+              // total = int.parse(getdata["total"]);
+
+              //  if ((offset) < total) {
+              var data = getdata["data"];
+              if (data.length != 0) {
+                List<OrderModel> items = [];
+                List<OrderModel> allitems = [];
+
+                items.addAll((data as List)
+                    .map((data) => OrderModel.fromJson(data))
+                    .toList());
+
+                allitems.addAll(items);
+                setState(() {
+                  orderId = items[0].id.toString();
+                });
+                print("this is orderID ${orderId.toString()}");
+                // for (OrderModel item in items) {
+                //   searchList.where((i) => i.id == item.id).map((obj) {
+                //     allitems.remove(item);
+                //     return obj;
+                //   }).toList();
+                // }
+                // searchList.addAll(allitems);
+
+                isLoadingmore = true;
+                offset = offset + perPage;
+              } else {
+                isLoadingmore = false;
+              }
+
+              // orderList = (data as List)
+              //     .map((data) => new OrderModel.fromJson(data))
+              //     .toList();
+              // searchList.addAll(orderList);
+              // offset = offset + perPage;
+              // }
+            } else {
+              isLoadingmore = false;
+            }
+
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+                //isLoadingmore = false;
+              });
+            }
+          } else {
+            if (mounted) if (mounted) {
+              setState(() {
+                isLoadingmore = false;
+                //msg = goToLogin;
+              });
+            }
+
+            Future.delayed(Duration(seconds: 1)).then((_) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+              );
+            });
+          }
+        }
+      } on TimeoutException catch (_) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            isLoadingmore = false;
+          });
+        }
+        setSnackbar(getTranslated(context, 'somethingMSg')!);
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          _isNetworkAvail = false;
+          _isLoading = false;
+        });
+      }
+    }
+
+    return null;
   }
 
   @override
@@ -245,7 +376,7 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
                 key: _formkey,
                 child: Flexible(
                   child: SingleChildScrollView(
-                      child: new Column(
+                      child:  Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -281,7 +412,7 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.fontColor,
                               ),
-                              decoration: new InputDecoration(
+                              decoration:  InputDecoration(
                                 hintText: getTranslated(context, 'MSG'),
                                 hintStyle: Theme.of(this.context)
                                     .textTheme
@@ -295,39 +426,39 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
                               controller: msgC,
                             )),
                         //Divider(),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20.0, 10, 20.0, 5),
-                          child: Text(
-                            getTranslated(context, 'SELECT_PAYMENT')!,
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.fromLTRB(20.0, 10, 20.0, 5),
+                        //   child: Text(
+                        //     getTranslated(context, 'SELECT_PAYMENT')!,
+                        //     style: Theme.of(context).textTheme.subtitle2,
+                        //   ),
+                        // ),
                         Divider(),
-                        payWarn
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0),
-                                child: Text(
-                                  getTranslated(context, 'payWarning')!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption!
-                                      .copyWith(color: Colors.red),
-                                ),
-                              )
-                            : Container(),
-
-                        paypal == null
-                            ? Center(child: CircularProgressIndicator())
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: getPayList()),
+                        // payWarn
+                        //     ? Padding(
+                        //         padding: const EdgeInsets.symmetric(
+                        //             horizontal: 20.0),
+                        //         child: Text(
+                        //           getTranslated(context, 'payWarning')!,
+                        //           style: Theme.of(context)
+                        //               .textTheme
+                        //               .caption!
+                        //               .copyWith(color: Colors.red),
+                        //         ),
+                        //       )
+                        //     : Container(),
+                        //
+                        // paypal == null
+                        //     ? Center(child: CircularProgressIndicator())
+                        //     : Column(
+                        //         mainAxisAlignment: MainAxisAlignment.start,
+                        //         children: getPayList()),
                       ])),
                 ),
               )
             ]),
         actions: <Widget>[
-          new TextButton(
+          TextButton(
               child: Text(
                 getTranslated(context, 'CANCEL')!,
                 style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
@@ -337,7 +468,7 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
               onPressed: () {
                 Navigator.pop(context);
               }),
-          new TextButton(
+           TextButton(
               child: Text(
                 getTranslated(context, 'SEND')!,
                 style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
@@ -348,31 +479,36 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
                 final form = _formkey.currentState!;
                 if (form.validate() && amtC!.text != '0') {
                   form.save();
-                  if (payMethod == null) {
-                    dialogState!(() {
-                      payWarn = true;
-                    });
-                  } else {
-                    if (payMethod!.trim() ==
-                        getTranslated(context, 'STRIPE_LBL')!.trim()) {
-                      stripePayment(int.parse(amtC!.text));
-                    } else if (payMethod!.trim() ==
-                        getTranslated(context, 'RAZORPAY_LBL')!.trim())
-                      razorpayPayment(double.parse(amtC!.text));
-                    else if (payMethod!.trim() ==
-                        getTranslated(context, 'PAYSTACK_LBL')!.trim())
-                      paystackPayment(context, int.parse(amtC!.text));
-                    else if (payMethod == getTranslated(context, 'PAYTM_LBL'))
-                      paytmPayment(double.parse(amtC!.text));
-                    else if (payMethod ==
-                        getTranslated(context, 'PAYPAL_LBL')) {
-                      paypalPayment((amtC!.text).toString());
-                    } else if (payMethod ==
-                        getTranslated(context, 'FLUTTERWAVE_LBL'))
-                      flutterwavePayment(amtC!.text);
-                    Navigator.pop(context);
-                  }
+                  _initiateCcAvenuePayment((amtC!.text).toString());
                 }
+                //   if (payMethod == null) {
+                //     dialogState!(() {
+                //       payWarn = true;
+                //     });
+                //   } else {
+                //     if (payMethod!.trim() ==
+                //         getTranslated(context, 'STRIPE_LBL')!.trim()) {
+                //       stripePayment(int.parse(amtC!.text));
+                //     } else if (payMethod!.trim() ==
+                //         getTranslated(context, 'RAZORPAY_LBL')!.trim())
+                //       razorpayPayment(double.parse(amtC!.text));
+                //     else if (payMethod!.trim() ==
+                //         getTranslated(context, 'PAYSTACK_LBL')!.trim())
+                //       paystackPayment(context, int.parse(amtC!.text));
+                //     else if (payMethod == getTranslated(context, 'PAYTM_LBL'))
+                //       paytmPayment(double.parse(amtC!.text));
+                //     else if (payMethod ==
+                //         getTranslated(context, 'PAYPAL_LBL')) {
+                //       paypalPayment((amtC!.text).toString());
+                //     } else if (payMethod ==
+                //         getTranslated(context, 'CC_AVENUE')) {
+                //       _initiateCcAvenuePayment((amtC!.text).toString());
+                //     }
+                //     else if (payMethod == getTranslated(context, 'FLUTTERWAVE_LBL'))
+                //       flutterwavePayment(amtC!.text);
+                //     Navigator.pop(context);
+                //   }
+                // }
               })
         ],
       );
@@ -421,14 +557,58 @@ class StateWallet extends State<MyWallet> with TickerProviderStateMixin {
     }
   }
 
+  _initiateCcAvenuePayment(String amount) async {
+    // String orderId = "wallet-refill-user-$CUR_USERID-${DateTime.now().millisecondsSinceEpoch}-${Random().nextInt(900) + 100}";
+
+    try {
+      // final amount = totalPrice.toString();
+      setState(() {
+        // _loading = true;
+        // errorText = "";
+      });
+      // final response = await http.post(Uri.parse('${UrlList.merchant_server_enc_url}?order_id=$orderId'),
+      // body: {"amount": amount});
+      final response = await http.get(Uri.parse('${UrlList.wallet_payment_enc_url}?order_id=$orderId&amount=$amount'));
+
+      print("ccavenue request is ${UrlList.wallet_payment_enc_url}?order_id=$orderId&amount=$amount &&& ${response.body}");
+
+      // final json = jsonDecode(response.body);
+      // final data = PaymentData.fromJson(json);
+      final data = response.body;
+      // if (data.statusMessage == "SUCCESS") {
+      setState(() {
+        // _loading = false;
+      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => WebviewPage(
+                data: data,
+              )));
+      // } else {
+      //   setState(() {
+      //     // _loading = false;
+      //   });
+      //   ScaffoldMessenger.of(context)
+      //       .showSnackBar(SnackBar(content: Text("Please try again.")));
+      // }
+    } catch (e) {
+      print(e.toString());
+      setState(() {
+        // _loading = false;
+      });
+    }
+  }
+
   Future<void> flutterwavePayment(String price) async {
     _isNetworkAvail = await isNetworkAvailable();
     if (_isNetworkAvail) {
       try {
-        if (mounted)
+        if (mounted) {
           setState(() {
             _isProgress = true;
           });
+        }
 
         var parameter = {
           AMOUNT: price,

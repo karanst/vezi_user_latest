@@ -348,6 +348,7 @@ double? deviceWidth;
 class UrlList {
 
     static final String merchant_server_enc_url = "https://vezi.global/app/v1/api/ccevenue_handler";
+    static final String wallet_payment_enc_url = "https://vezi.global/app/v1/api/ccevenue_handler_wallet";
         //"http://122.182.6.212:8080/MobPHPKit/dubai/init_payment_43205.php";
 
     static final String ccAvenue_payment_url = "https://secure.ccavenue.ae/transaction/transaction.do";
